@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Bootstrap CSS -->
+	<link href="./lib/bootstrap.min.css" rel="stylesheet">
+	<script src="./lib/bootstrap.bundle.min.js"></script>
+	<script src="./lib/jquery-3.6.0.min.js"></script>
+	<script src="./lib/popper.min.js"></script>
+	<script src="./lib/bootstrap.min.js"></script>
+	<script type="text/javascript" language="javascript" src="db.json"></script>
+	<title></title>
+</head>
+<style type="text/css">
+	.top {
+		margin-top: 15px;
+	}
+
+	.input {
+		background-color: white;
+	}
+</style>
+
+<body>
+	<div class="container mt-5" style="background-color: rgb(239,239,239)">
+		<h1 style="text-align: center;">Simulador de Investimentos</h1>
+		<div class="row">
+			<div class="col-sm-5">
+				<h3>Simulador</h3>
+				<div class="row">
+					<div class="col-sm-6">
+
+						<p>Rendimento</p>
+						<div class="btn-group">
+							<button id="Bruto" type="button" class="btn btn-primary">Bruto</button>
+							<button id="Liquido" type="button" class="btn btn-secondary">Líquido</button>
+						</div>
+						<form>
+							<p class="top">Aporte Inícial</p>
+							<div class="input-group">
+								<span class="input-group-text input">R$</span>
+								<input id="AporteInicial" type="text" class="form-control" placeholder="">
+							</div>
+							<p class="top">Prazo (em meses)</p>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="">
+							</div>
+							<p class="top">IPCA(ao ano)</p>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="10,06%">
+							</div>
+						</form>
+						<button id="Limpar" type="button" class="btn btn-warning top">Limpar campos</button>
+
+					</div>
+					<div class="col-sm-6">
+						<p>Rendimento</p>
+						<div class="btn-group">
+							<button id="Pre" type="button" class="btn btn-primary">Pre</button>
+							<button id="POS" type="button" class="btn btn-secondary">POS</button>
+							<button id="FIXADO" type="button" class="btn btn-secondary">FIXADO</button>
+						</div>
+						<form>
+							<p class="top">Aporte Mensal</p>
+							<div class="input-group">
+								<span class="input-group-text input">R$</span>
+								<input id="AporteMensal" type="text" class="form-control" placeholder="">
+							</div>
+							<p class="top">Rentabilidade</p>
+							<div class="input-group">
+								<input id="Rentabilidade" type="text" class="form-control" placeholder="">
+							</div>
+							<p class="top">CDI(ao ano)</p>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="9,18%">
+							</div>
+						</form>
+						<button id="btnSimular" type="button" class="btn btn-warning top">Simular</button>
+					</div>
+				</div>
+				<pre>
+
+				</pre>
+			</div>
+
+			<div class="col-sm-7">
+				<h3>Resultado da Simulação</h3>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Valor final Bruto</strong></p>
+							<p id="ValorfinalBruto"></p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Alíquota do IR</strong></p>
+							<p id="AliquotadoIR"></p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Valor Pago em IR</strong></p>
+							<p id="ValorPagoemIR"></p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Valor Final Líquido</strong></p>
+							<p style="color: rgb(51,155,34);" id="ValorFinalLiquido"></p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Valor Total Investido</strong></p>
+							<p id="ValorTotalInvestido"></p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="card mb-3 border-0 p-4 basic-card text-center">
+							<p><strong>Ganho Líquido</strong></p>
+							<p style="color: rgb(51,155,34);" id="ganhoLiquido"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function () {
+			console.log(jsonData);
+		});
+
+		var sel1 = 0;
+		$("#Bruto").click(function () {
+			$('#Liquido').removeClass('btn-primary').addClass('btn-secondary');
+			$('#Bruto').addClass('btn-primary').removeClass('btn-secondary');
+			sel1 = 0;
+		});
+		$("#Liquido").click(function () {
+			$('#Bruto').removeClass('btn-primary').addClass('btn-secondary');
+			$('#Liquido').addClass('btn-primary').removeClass('btn-secondary');
+			sel1 = 1;
+		});
+		var sel2 = 0;
+		$("#Pre").click(function () {
+			$('#FIXADO').removeClass('btn-primary').addClass('btn-secondary');
+			$('#POS').removeClass('btn-primary').addClass('btn-secondary');
+			$('#Pre').addClass('btn-primary').removeClass('btn-secondary');
+			sel2 = 0;
+		});
+		$("#POS").click(function () {
+			$('#Pre').removeClass('btn-primary').addClass('btn-secondary');
+			$('#FIXADO').removeClass('btn-primary').addClass('btn-secondary');
+			$('#POS').addClass('btn-primary').removeClass('btn-secondary');
+			sel2 = 1;
+		});
+		$("#FIXADO").click(function () {
+			$('#Pre').removeClass('btn-primary').addClass('btn-secondary');
+			$('#POS').removeClass('btn-primary').addClass('btn-secondary');
+			$('#FIXADO').addClass('btn-primary').removeClass('btn-secondary');
+			sel2 = 2;
+		});
+
+		var ValorfinalBruto = 15509.27 / parseFloat(jsonData.simulacoes[1].valorFinalBruto) / 1500;
+		var ValorFinalLiquido = 56509.27 / parseFloat(jsonData.simulacoes[1].valorFinalLiquido) / 200;
+
+		var ValorTotalInvestido = 9509.27 / 1000 / 200;
+		var ganhoLiquido =  47000 / parseFloat(jsonData.simulacoes[1].ganhoLiquido) / 200;
+		$("#btnSimular").click(function () {
+
+			$('#ValorfinalBruto').html("R$ " + Math.round(ValorfinalBruto * jsonData.simulacoes[sel2 + sel1 * 3].valorFinalBruto * ($('#AporteInicial').val()) * 100) / 100);
+			$('#ValorPagoemIR').html("R$ " + Math.round(ValorfinalBruto * jsonData.simulacoes[sel2 + sel1 * 3].valorFinalBruto * ($('#AporteInicial').val()) * 100) / 100);
+			$('#ValorFinalLiquido').html("R$ " + Math.round(ValorFinalLiquido * jsonData.simulacoes[sel2 + sel1 * 3].valorFinalLiquido * ($('#AporteMensal').val()) * 100) / 100);
+
+			$('#ValorTotalInvestido').html("R$ " + Math.round(ValorTotalInvestido * 1000 * $('#AporteMensal').val() * 100) / 100);
+			$('#ganhoLiquido').html("R$ " + Math.round(ganhoLiquido * jsonData.simulacoes[sel2 + sel1 * 3].ganhoLiquido * ($('#AporteMensal').val()) * 100) / 100);
+
+			$('#AliquotadoIR').html($('#Rentabilidade').val()+"%");
+			
+			
+			console.log();
+		});
+		$('#Limpar').click(function() {
+			location.reload();
+		});
+	</script>
+</body>
+
+</html>
