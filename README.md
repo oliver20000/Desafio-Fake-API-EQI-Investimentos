@@ -4,11 +4,11 @@ Este repositório é a minha solução para o desafio de front-end da EQI Invest
 
 Foi utilizado na resoluçao do desafio:
 
-JavaScript
-JQuery
-HTML5
-CSS
-Bootstrap
+JavaScript,
+JQuery,
+HTML5,
+CSS,
+Bootstrap;
 
 Como executar:
 
